@@ -1,5 +1,9 @@
+import React from 'react';
 import PrescriptionCard from './PrescriptionCard'
 import { Link } from "react-router-dom";
+
+
+
 
 const MyPrescription = () => {
 

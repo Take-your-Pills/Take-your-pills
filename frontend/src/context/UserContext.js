@@ -7,13 +7,9 @@ const UserContextProvider = (props) => {
 
 const [user, setUser] = useState([]);
 
-  useEffect(() => {
-    getUser();
-  }, []);
-
   const getUser = () => {
     axios
-      .get("/prescriptions")
+      .get("/users/1")
       .then((response) => response.data)
       .then((userInfo) => {
         console.log(userInfo)
@@ -24,7 +20,7 @@ const [user, setUser] = useState([]);
 return (
     <div>
     <UserContext.Provider
-        value={{ user }}
+        value={{ user, getUser }}
     >
         {props.children}
     </UserContext.Provider>

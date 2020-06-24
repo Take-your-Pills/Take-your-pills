@@ -1,14 +1,25 @@
-import React from 'react';
-import PrescriptionCard from './PrescriptionCard'
+import React, { useContext, useEffect, useRef } from 'react';
+import { UserContext } from '../context/UserContext';
+import { PrescriptionContext } from '../context/PrescriptionContext';
+import PrescriptionCard from './PrescriptionCard';
 import { Link } from "react-router-dom";
-
-
 
 
 const MyPrescription = () => {
 
-  //[{}]
+  const { prescriptions, getPrescriptions } = useContext(PrescriptionContext);
+  const { user, getUser } = useContext(UserContext);
 
+
+  useEffect(() => {
+    getUser()
+  }, []);
+
+  useEffect(() => {
+    if(user.length > 0){
+      getPrescriptions(user[0].id)
+    }
+  }, [user]);
 
 
   let duration = Math.max(prescriptions.map((drug) => {
@@ -53,13 +64,12 @@ const MyPrescription = () => {
 
   return (
     <div>
-      <button><Link to='/new-prescription'>Add Prescription</Link></button>
-      <PrescriptionCard
-        daysleft={this.daysleft}
-        successRate={this.successRate}
-      />
+     <button><Link to='/new-prescription'>Add Prescription</Link></button>
+      {prescriptions.map(prescription => {
+        return <PrescriptionCard 
+        {...prescription}/>
+      })}
     </div>
-  )
-};
+  );
 
 export default MyPrescription;

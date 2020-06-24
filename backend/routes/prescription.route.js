@@ -16,6 +16,22 @@ router.get('/', (req, res) => {
     })
 });
 
+router.get('/:id', (req, res) => {
+
+  const id = req.params.id
+
+  connection.query('SELECT * FROM prescriptions WHERE user_id = ?', [id], (err, results) => {
+      if (err) {
+          res.status(500).json({
+            error: err.message,
+            sql: err.sql,
+          });
+        } else {
+          res.json(results);
+        }
+  })
+});
+
 router.post('/', (req, res) => {
 
   const formData = req.body;

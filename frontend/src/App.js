@@ -13,7 +13,7 @@ import MyPills from "./components/MyPills";
 import PrescriptionContextProvider from "../src/context/PrescriptionContext";
 import UserContextProvider from "../src/context/UserContext";
 import DrugsContextProvider from "../src/context/DrugsContext";
-
+import HourContextProvider from "../src/context/HourContext";
 
 function App() {
   // Example Connection to the Express Server
@@ -24,20 +24,25 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <PrescriptionContextProvider>
-          <UserContextProvider>
-            <DrugsContextProvider>
-              <Switch>
-                <Route exact path="/" component={MyPrescription} />
-                <Route path="/login" component={Login} />
-                <Route path="/create-account" component=    {CreateAccount} />
-                <Route path="/prescription-info" component=     {PresciptionInfo} />
-                <Route path="/new-prescription" component=      {NewPrescription} />
-                <Route path="/my-pills" component={MyPills} />
-              </Switch>
-            </DrugsContextProvider>
-          </UserContextProvider>
-        </PrescriptionContextProvider>
+        <HourContextProvider>
+          <PrescriptionContextProvider>
+            <UserContextProvider>
+              <DrugsContextProvider>
+                <Switch>
+                  <Route exact path="/" component={MyPrescription} />
+                  <Route path="/login" component={Login} />
+                  <Route path="/create-account" component={CreateAccount} />
+                  <Route
+                    path="/prescription-info"
+                    component={PresciptionInfo}
+                  />
+                  <Route path="/new-prescription" component={NewPrescription} />
+                  <Route path="/my-pills" component={MyPills} />
+                </Switch>
+              </DrugsContextProvider>
+            </UserContextProvider>
+          </PrescriptionContextProvider>
+        </HourContextProvider>
       </BrowserRouter>
     </div>
   );

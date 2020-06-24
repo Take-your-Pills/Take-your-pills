@@ -1,16 +1,11 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { UserContext } from '../context/UserContext';
-
+import { UserContext } from "../context/UserContext";
 
 export const PrescriptionContext = createContext();
 
-const { user } = useContext(UserContext);
-
-
 const PrescriptionContextProvider = (props) => {
-
-const [prescriptions, setPrescriptions] = useState([]);
+  const [prescriptions, setPrescriptions] = useState([]);
 
   useEffect(() => {
     getPrescriptions();
@@ -21,20 +16,18 @@ const [prescriptions, setPrescriptions] = useState([]);
       .get("/prescriptions")
       .then((response) => response.data)
       .then((prescriptionsList) => {
-          console.log(prescriptionsList)
-        setPrescriptions(prescriptionsList)
+        console.log(prescriptionsList);
+        setPrescriptions(prescriptionsList);
       });
-  }
+  };
 
-return (
+  return (
     <div>
-    <PrescriptionContext.Provider
-        value={{ prescriptions }}
-    >
+      <PrescriptionContext.Provider value={{ prescriptions }}>
         {props.children}
-    </PrescriptionContext.Provider>
+      </PrescriptionContext.Provider>
     </div>
-);   
-}
+  );
+};
 
 export default PrescriptionContextProvider;

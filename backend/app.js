@@ -3,10 +3,11 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const connection = require('./config');
-const drugsRouter = require('./routes/drugs');
-const hoursRouter = require('./routes/hours');
-const prescriptionRouter = require('./routes/prescription');
-const userRouter = require('./routes/user');
+
+const drugsRouter = require('./routes/drugs.route');
+const hoursRouter = require('./routes/hours.route');
+const prescriptionRouter = require('./routes/prescription.route');
+const userRouter = require('./routes/user.route');
 
 app.use(morgan('dev'));
 app.use(express.json())
@@ -18,10 +19,10 @@ connection.connect(err => {
         console.log('You are successfully connected to the database!')
 })
 
-app.use('/user', userRouter);
+app.use('/users', userRouter);
 app.use('/drugs', drugsRouter);
 app.use('/hours', hoursRouter);
-app.use('/prescription', prescriptionRouter);
+app.use('/prescriptions', prescriptionRouter);
 
 // implement the API part
 app.get("/api", (req, res) => {

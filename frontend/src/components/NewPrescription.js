@@ -6,7 +6,6 @@ import DrugForm from "./DrugForm";
 const NewPrescription = () => {
   return (
     <div>
-      <TempDrug />
       <DrugForm />
     </div>
   );

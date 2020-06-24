@@ -5,20 +5,14 @@ import { UserContext } from '../context/UserContext';
 
 export const PrescriptionContext = createContext();
 
-const { user } = useContext(UserContext);
-
-
 const PrescriptionContextProvider = (props) => {
 
 const [prescriptions, setPrescriptions] = useState([]);
 
-  useEffect(() => {
-    getPrescriptions();
-  }, []);
 
-  const getPrescriptions = () => {
+  const getPrescriptions = (id) => {
     axios
-      .get("/prescriptions")
+      .get(`/prescriptions/${id}`)
       .then((response) => response.data)
       .then((prescriptionsList) => {
           console.log(prescriptionsList)
@@ -29,7 +23,7 @@ const [prescriptions, setPrescriptions] = useState([]);
 return (
     <div>
     <PrescriptionContext.Provider
-        value={{ prescriptions }}
+        value={{ prescriptions, getPrescriptions }}
     >
         {props.children}
     </PrescriptionContext.Provider>

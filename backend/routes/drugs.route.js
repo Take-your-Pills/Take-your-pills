@@ -20,7 +20,7 @@ router.get('/:id', (req, res) => {
 
     const id = req.params.id
 
-    connection.query('SELECT * FROM drugs WHERE prescriptions_id = ?', [id], (err, results) => {
+    connection.query('SELECT * FROM drugs WHERE prescription_id = ?', [id], (err, results) => {
         if (err) {
             res.status(500).json({
               error: err.message,

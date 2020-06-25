@@ -15,15 +15,34 @@ const [prescriptions, setPrescriptions] = useState([]);
       .get(`/prescriptions/${id}`)
       .then((response) => response.data)
       .then((prescriptionsList) => {
-          console.log(prescriptionsList)
         setPrescriptions(prescriptionsList)
       });
+  }
+
+  const getPrescriptionsSuccess = (drugsList) => {
+      const successArr = drugsList.map(drug => {
+          return drug.success
+      })
+
+      const sum = successArr.reduce((a, b) => {
+          return a + b
+      })
+    
+      const average = sum/drugsList.length;
+
+      const prescriptionsSuccess = prescriptions.map(prescription => {
+          if(prescription.id === drugsList[0].id){
+              prescription.success = average
+          }
+          return prescription
+      })
+      setPrescriptions(prescriptionsSuccess)
   }
 
 return (
     <div>
     <PrescriptionContext.Provider
-        value={{ prescriptions, getPrescriptions }}
+        value={{ prescriptions, getPrescriptions, getPrescriptionsSuccess }}
     >
         {props.children}
     </PrescriptionContext.Provider>

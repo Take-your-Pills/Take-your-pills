@@ -16,7 +16,7 @@ const MyPrescription = () => {
   }, []);
 
   useEffect(() => {
-    if(user.length > 0){
+    if (user.length > 0) {
       getPrescriptions(user[0].id)
     }
   }, [user]);
@@ -24,15 +24,17 @@ const MyPrescription = () => {
 
   return (
     <div>
-     <button><Link to='/new-prescription'>Add Prescription</Link></button>
+      <button><Link to='/new-prescription'>Add Prescription</Link></button>
       {prescriptions.map(prescription => {
+
         return <PrescriptionCard 
         {...prescription}
         key={prescription.id}/>
+
       })}
       <button><Link to='/prescription-info'>More</Link></button>
     </div>
   );
 }
 
-export default MyPrescription;
+  export default MyPrescription;

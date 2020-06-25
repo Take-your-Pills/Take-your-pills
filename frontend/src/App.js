@@ -16,10 +16,6 @@ import DrugsContextProvider from "../src/context/DrugsContext";
 import HourContextProvider from "../src/context/HourContext";
 
 function App() {
-  // Example Connection to the Express Server
-  React.useEffect(() => {
-    axios.get("/api").then((res) => console.log(res.data));
-  }, []);
 
   return (
     <div className="App">

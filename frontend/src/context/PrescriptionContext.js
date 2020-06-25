@@ -7,17 +7,15 @@ export const PrescriptionContext = createContext();
 const PrescriptionContextProvider = (props) => {
   const [prescriptions, setPrescriptions] = useState([]);
 
-  useEffect(() => {
-    getPrescriptions();
-  }, []);
 
-  const getPrescriptions = () => {
+  const getPrescriptions = (id) => {
     axios
-      .get("/prescriptions")
+      .get(`/prescriptions/${id}`)
       .then((response) => response.data)
       .then((prescriptionsList) => {
         console.log(prescriptionsList);
         setPrescriptions(prescriptionsList);
+
       });
   };
 
@@ -29,9 +27,31 @@ const PrescriptionContextProvider = (props) => {
       .then((response) => console.log(response))
   };
 
-  return (
+  const getPrescriptionsSuccess = (drugsList) => {
+      const successArr = drugsList.map(drug => {
+          return drug.success
+      })
+
+      const sum = successArr.reduce((a, b) => {
+          return a + b
+      })
+    
+      const average = sum/drugsList.length;
+
+      const prescriptionsSuccess = prescriptions.map(prescription => {
+          if(prescription.id === drugsList[0].id){
+              prescription.success = average
+          }
+          return prescription
+      })
+      setPrescriptions(prescriptionsSuccess)
+  }
+
+return (
     <div>
-      <PrescriptionContext.Provider value={{ prescriptions, addPrescription }}>
+    <PrescriptionContext.Provider
+        value={{ prescriptions, getPrescriptions, getPrescriptionsSuccess, addPrescription }}
+    >
         {props.children}
       </PrescriptionContext.Provider>
     </div>

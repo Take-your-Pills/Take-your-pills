@@ -20,7 +20,7 @@ router.get('/:id', (req, res) => {
 
   const id = req.params.id
 
-  connection.query('SELECT * FROM prescriptions WHERE user_id = ?', [id], (err, results) => {
+  connection.query('SELECT id, title, DAY(start_date) AS start_day,MONTH(start_date) AS start_month, YEAR(start_date) AS start_year,DAY(end_date) AS end_day, MONTH(end_date) AS end_month, YEAR(end_date) AS end_year, days_left FROM prescriptions WHERE user_id = ?', [id], (err, results) => {
       if (err) {
           res.status(500).json({
             error: err.message,

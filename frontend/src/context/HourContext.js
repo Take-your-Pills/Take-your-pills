@@ -6,13 +6,11 @@ export const HourContext = createContext();
 const HourContextProvider = (props) => {
   const [hours, setHours] = useState([]);
 
-  useEffect(() => {
-    getHours();
-  }, []);
-
-  const addHour = (newHourObj) => {
-    setHours([...hours, newHourObj]);
-  };
+  const addHours = (hoursObject) => {
+    axios
+      .post('/hours', hoursObject)
+      .then((response) => console.log(response))
+};
 
   const getHours = () => {
     axios
@@ -26,7 +24,7 @@ const HourContextProvider = (props) => {
 
   return (
     <div>
-      <HourContext.Provider value={{ hours, addHour }}>
+      <HourContext.Provider value={{ hours, setHours, addHours }}>
         {props.children}
       </HourContext.Provider>
     </div>

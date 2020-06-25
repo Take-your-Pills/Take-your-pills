@@ -36,25 +36,44 @@ router.post('/', (req, res) => {
 
   const formData = req.body;
 
-  console.log(formData)
+  const prescriptionObject = formData.shift()
 
-  return connection.query('INSERT INTO prescriptions SET ?' , [formData], (err, results) => {
+  console.log("prescriptionObject", prescriptionObject)
+  console.log("formdata", formData)
+
+  return connection.query('INSERT INTO prescriptions SET ?' ,[prescriptionObject], (err, results) => {
       if(err) {
+        console.log("err in pres")
           return res.status(500).json({
               error: err.message,
               sql: err.sql,
           });
       }
-      return connection.query('SELECT * FROM prescriptions WHERE id = ?', results.insertId, (err2, records) => {
+      const drugsArr = formData.map(drug => {
+        drug.prescription_id = results.insertId
+        return drug
+      })
+      console.log("dugsArr", drugsArr)
+      let sql = "INSERT INTO `drugs` (prescription_id, name, duration, times_a_day, dose, notes, doses_taken, days_left, doses_supposed) VALUES "
+      drugsArr.map( drug => {
+        if(drugsArr.indexOf(drug) !== drugsArr.length -1) {
+          sql += `(${drug.prescription_id}, "${drug.name}", ${drug.duration}, ${drug.times_a_day}, "${drug.dose}", "${drug.notes}", ${drug.doses_taken}, ${drug.days_left}, ${drug.doses_supposed}),`
+        } else {
+          sql += `(${drug.prescription_id}, "${drug.name}", ${drug.duration}, ${drug.times_a_day}, "${drug.dose}", "${drug.notes}", ${drug.doses_taken}, ${drug.days_left}, ${drug.doses_supposed});`
+        }
+      })
+      
+      return connection.query(sql, (err2, records) => {
           if(err2){
+            console.log(err2.sql)
               return res.status(500).json({
                   error: err2.message,
                   sql: err2.sql,
               });
           }
-          const InsertedPrescription = records[0];
-          return res.status(201)
-          .json(InsertedPrescription)
+          //const InsertedPrescription = records[0];
+          //return res.status(201)
+          //.json(InsertedPrescription)
       });
   });
 });

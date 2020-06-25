@@ -4,16 +4,18 @@ import { DrugsContext } from "../context/DrugsContext";
 import TempDrug from "./TempDrug";
 import { useForm } from "react-hook-form";
 import { PrescriptionContext } from "../context/PrescriptionContext";
+import { HourContext } from "../context/HourContext";
 
 const NewPrescription = () => {
   const { tempDrugs } = useContext(DrugsContext);
   const { register, handleSubmit } = useForm();
   const { addPrescription } = useContext(PrescriptionContext);
+  const { hours, addHours } = useContext(HourContext);
 
   const now_year = Number(new Date().getFullYear());
   const now_month = Number(new Date().getMonth() + 1);
   const now_day = Number(new Date().getDate());
-  const nowDate = `${now_year}, ${now_month}, ${now_day}`;
+  const nowDate = `${now_year}-${now_month}-${now_day}`;
 
   const [checkboxCheck, setCheckboxCheck] = useState(true);
 
@@ -22,21 +24,55 @@ const NewPrescription = () => {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
-    const startDate = data.date === true ? nowDate : data.date;
-    const dateArr = tempDrugs.map((drug) => {
-      return drug.duration;
+    const startDate = data.date === "true" ? nowDate : data.date;
+    console.log(startDate);
+
+    const durationArr = tempDrugs.map((drug) => {
+      return Number(drug.duration)
     });
-    const duration = Math.max(dateArr);
-    const year = Number(new Date(startDate).getFullYear());
-    const month = Number(new Date(startDate).getMonth());
-    const day = Number(new Date(startDate).getDate());
-    console.log(year, month, day);
+    const prescriptionDuration = Math.max(...durationArr);
+    const dateArr = startDate.split("-");
+    const year = dateArr[0]
+    const month = dateArr[1]
+    const day = dateArr[2]
+    const startingDate = new Date(year, month, day)
+    startingDate.setDate(startingDate.getDate() + prescriptionDuration)
+    const dd = startingDate.getDate();
+    const mm = startingDate.getMonth();
+    const yy = startingDate.getFullYear();
+    const endDate = `${yy}-${mm}-${dd}`
+    console.log(endDate)
     const newPrescriptionObject = {
+      user_id:1,
       title: data.title,
       start_date: startDate,
+      end_date: endDate,
+      duration: prescriptionDuration,
+      days_left: prescriptionDuration
     };
-    addPrescription(newPrescriptionObject);
+
+    console.log(newPrescriptionObject)
+
+    console.log(tempDrugs)
+
+    const drugsObject = tempDrugs.map(drug => {
+      return ({
+        id: drug.id,
+        name: drug.name,
+        duration: drug.duration,
+        times_a_day: drug.times_a_day,
+        dose: drug.dose,
+        notes: drug.notes,
+        doses_taken: drug.doses_taken,
+        days_left: drug.days_left,
+        doses_supposed: drug.doses_supposed
+      }
+    )}
+    )
+      
+    console.log(drugsObject)
+    addPrescription(newPrescriptionObject, drugsObject);
+    addHours(hours)
   };
 
   return (

@@ -21,8 +21,12 @@ const PrescriptionContextProvider = (props) => {
       });
   };
 
-  const addPrescription = (newPrescriptionObj) => {
-    setPrescriptions([...prescriptions, newPrescriptionObj]);
+  const addPrescription = (PrescriptionObject, drugsObject) => {
+
+    const prescriptionDrug = [PrescriptionObject, ...drugsObject]
+    axios
+      .post('/prescriptions', prescriptionDrug)
+      .then((response) => console.log(response))
   };
 
   return (

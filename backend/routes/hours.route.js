@@ -20,27 +20,27 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
 
     const formData = req.body;
-  
+
     console.log(formData)
+
+    let sql = "INSERT INTO `hours` (hour, drug_id) VALUES "
+      formData.map( time => {
+        if(formData.indexOf(time) !== formData.length -1) {
+          sql += `("${time.hour}", "${time.drug_id}"),`
+        } else {
+          sql += `("${time.hour}", "${time.drug_id}");`
+        }
+    })
+    console.log("hour",formData)
   
-    return connection.query('INSERT INTO hours SET ?' , [formData], (err, results) => {
+    return connection.query(sql , (err, results) => {
         if(err) {
+            console.log(err.sql)
             return res.status(500).json({
                 error: err.message,
                 sql: err.sql,
             });
         }
-        return connection.query('SELECT * FROM hours WHERE id = ?', results.insertId, (err2, records) => {
-            if(err2){
-                return res.status(500).json({
-                    error: err2.message,
-                    sql: err2.sql,
-                });
-            }
-            const InsertedHours = records[0];
-            return res.status(201)
-            .json(InsertedHours)
-        });
     });
   });
 

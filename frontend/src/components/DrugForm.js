@@ -1,28 +1,60 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { DrugsContext } from "../context/DrugsContext";
 import { HourContext } from "../context/HourContext";
+import uuid from "react-uuid";
+
 
 const DrugForm = () => {
   const { register, handleSubmit } = useForm();
   const { addTempDrugs } = useContext(DrugsContext);
-  const { addHour } = useContext(HourContext);
+  const { addHour, setHours } = useContext(HourContext);
+
+  const[hoursNum, setHoursNum] = useState([0])
 
   const onSubmit = (data) => {
     console.log(data);
     const newDrugObj = {
+      id: uuid(),
       name: data.name,
-      duration: data.duration,
-      time_a_day: data.time_a_day,
+      duration: Number(data.duration),
+      times_a_day: Number(data.times_a_day),
       dose: data.dose,
       notes: data.notes,
-      hour: data.hour,
+      doses_taken: 0,
+      days_left: Number(data.duration),
+      doses_supposed:0
     };
-    const newHourObj = { hour: data.hour };
+    const hoursValues = []
+    for(let i = 0; i < Number(data.times_a_day) ; i++){
+      console.log(data)
+      const hour = `hour${i}`
+      console.log(data[hour])
+      hoursValues.push(data[hour])
+    }
+    console.log(hoursValues)
+    const hoursObject = hoursValues.map( time => {
+      return {hour: `${time}:00`, drug_id: newDrugObj.id}
+    })
+
+    console.log(newDrugObj)
+    console.log(hoursObject)
     addTempDrugs(newDrugObj);
-    console.log(newHourObj);
-    addHour(newHourObj);
+    setHours(hoursObject);
   };
+
+  const handleChange = (event) => {
+    const value = event.target.value
+
+    const hoursArr = []
+
+    for(let i = 0 ; i < value; i++){
+        hoursArr.push(i)
+    }
+
+    setHoursNum(hoursArr)
+
+  }
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -44,17 +76,21 @@ const DrugForm = () => {
           ref={register({ required: "The duration is required" })}
         />
         <br />
-        <label for="time_a_day">How many time per day : </label>
-        <input
-          id="time_a_day"
-          type="number"
-          name="time_a_day"
-          placeholder="Ex: 3"
-          ref={register({
-            required:
-              "You need to enter how many times you have to take the drug per day",
-          })}
-        />
+        <label for="times_a_day">How many time per day : </label>
+        <select id="times_a_day"
+        name="times_a_day"
+        ref={register({
+          required:
+            "You need to enter how many times you have to take the drug per day",
+        })}
+        onChange={handleChange}
+        >
+          <option value="1">1 time a day</option>
+          <option value="2">2 times a day</option>
+          <option value="3">3 times a day</option>
+          <option value="4">4 times a day</option>
+          <option value="5">5 times a day</option>
+        </select>
         <br />
         <label for="dose">Doses for each takes : </label>
         <input
@@ -65,16 +101,22 @@ const DrugForm = () => {
           ref={register({ required: "The quantity is required" })}
         />
         <br />
-        <label for="hour">Hour when it should taked : </label>
-        <input
-          id="hour"
-          type="time"
-          name="hour"
-          placeholder="hour"
-          ref={register({
-            required: "The time when you need to take the drug is required",
-          })}
-        />
+        {hoursNum.map(hour => {
+          return (
+          <div>
+            <label for={`hour${hour}`}>Hour when it should taked : </label>
+            <input
+              id={`hour${hour}`}
+              type="time"
+              name={`hour${hour}`}
+              ref={register({
+                required: "The time when you need to take the drug is required",
+              })}
+            />  
+          </div>)
+          
+        })}
+        
         <br />
         <label for="notes">Notes : </label>
         <textarea

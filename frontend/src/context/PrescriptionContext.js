@@ -1,13 +1,11 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { UserContext } from '../context/UserContext';
-
+import { UserContext } from "../context/UserContext";
 
 export const PrescriptionContext = createContext();
 
 const PrescriptionContextProvider = (props) => {
-
-const [prescriptions, setPrescriptions] = useState([]);
+  const [prescriptions, setPrescriptions] = useState([]);
 
 
   const getPrescriptions = (id) => {
@@ -15,9 +13,19 @@ const [prescriptions, setPrescriptions] = useState([]);
       .get(`/prescriptions/${id}`)
       .then((response) => response.data)
       .then((prescriptionsList) => {
-        setPrescriptions(prescriptionsList)
+        console.log(prescriptionsList);
+        setPrescriptions(prescriptionsList);
+
       });
-  }
+  };
+
+  const addPrescription = (PrescriptionObject, drugsObject) => {
+
+    const prescriptionDrug = [PrescriptionObject, ...drugsObject]
+    axios
+      .post('/prescriptions', prescriptionDrug)
+      .then((response) => console.log(response))
+  };
 
   const getPrescriptionsSuccess = (drugsList) => {
       const successArr = drugsList.map(drug => {
@@ -42,12 +50,12 @@ const [prescriptions, setPrescriptions] = useState([]);
 return (
     <div>
     <PrescriptionContext.Provider
-        value={{ prescriptions, getPrescriptions, getPrescriptionsSuccess }}
+        value={{ prescriptions, getPrescriptions, getPrescriptionsSuccess, addPrescription }}
     >
         {props.children}
-    </PrescriptionContext.Provider>
+      </PrescriptionContext.Provider>
     </div>
-);   
-}
+  );
+};
 
 export default PrescriptionContextProvider;

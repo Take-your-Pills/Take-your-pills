@@ -1,136 +1,134 @@
 import React, { useContext, useState } from "react";
-import { useForm , Controller} from "react-hook-form";
-import Select from "react-select";
+
+import { useForm } from "react-hook-form";
+import { DrugsContext } from "../context/DrugsContext";
+import { HourContext } from "../context/HourContext";
+import uuid from "react-uuid";
+
 
 const DrugForm = () => {
-  const { register, handleSubmit, control } = useForm();
-  const [hoursNum, setHourNum] = useState([1])
+  const { register, handleSubmit } = useForm();
+  const { addTempDrugs } = useContext(DrugsContext);
+  const { addHour, setHours } = useContext(HourContext);
 
-  console.log(hoursNum)
-
-  const handleChange = (event) => {
-
-    const value = event.target.value
-    
-    switch(value){
-      case '1':
-        setHourNum([1]) 
-        break;
-      case '2':
-        setHourNum([1, 2]) 
-        break;
-      case '3':
-        setHourNum([1, 2, 3]) 
-          break;
-      case '4':
-        setHourNum([1, 2, 3, 4]) 
-          break;
-      case '5':
-        setHourNum([1, 2, 3, 4, 5]) 
-          break;
-    }
-  }
-  var startDate = new Date(2020, 5, 25);
-  console.log(someDate)
-  var numberOfDaysToAdd = 6;
-  startDate.setDate(startDate.getDate() + numberOfDaysToAdd); 
-
-  var dd = someDate.getDate();
-  var mm = someDate.getMonth() + 1;
-  var y = someDate.getFullYear();
-
-  var someFormattedDate = `${dd}-${mm}-${y}`;
-
-  console.log(someFormattedDate)
+  const[hoursNum, setHoursNum] = useState([0])
 
   const onSubmit = (data) => {
     console.log(data);
     const newDrugObj = {
+      id: uuid(),
       name: data.name,
-      duration: data.duration,
-      time_a_day: data.time_a_day,
-      quantity: data.quantity,
+      duration: Number(data.duration),
+      times_a_day: Number(data.times_a_day),
+      dose: data.dose,
       notes: data.notes,
+      doses_taken: 0,
+      days_left: Number(data.duration),
+      doses_supposed:0
     };
-    const NewHourObj = {
-      hour: data.hour,
-    };
-    console.log(newDrugObj);
-    console.log(NewHourObj);
+    const hoursValues = []
+    for(let i = 0; i < Number(data.times_a_day) ; i++){
+      console.log(data)
+      const hour = `hour${i}`
+      console.log(data[hour])
+      hoursValues.push(data[hour])
+    }
+    console.log(hoursValues)
+    const hoursObject = hoursValues.map( time => {
+      return {hour: `${time}:00`, drug_id: newDrugObj.id}
+    })
+
+    console.log(newDrugObj)
+    console.log(hoursObject)
+    addTempDrugs(newDrugObj);
+    setHours(hoursObject);
   };
+
+  const handleChange = (event) => {
+    const value = event.target.value
+
+    const hoursArr = []
+
+    for(let i = 0 ; i < value; i++){
+        hoursArr.push(i)
+    }
+
+    setHoursNum(hoursArr)
+
+  }
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <label for="name">Drug Name : </label>
         <input
+          id="name"
           type="text"
           name="name"
-          placeholder="Drug Name"
+          placeholder="Ex: Aspirin"
           ref={register({ required: "The name is Required" })}
         />
+        <br />
+        <label for="duration">Duration : </label>
         <input
+          id="duration"
           type="number"
           name="duration"
-          placeholder="Duration - How many days you need to take that drug : Ex: 5"
+          placeholder="Ex: 5"
           ref={register({ required: "The duration is required" })}
         />
+        <br />
+        <label for="times_a_day">How many time per day : </label>
+        <select id="times_a_day"
+        name="times_a_day"
+        ref={register({
+          required:
+            "You need to enter how many times you have to take the drug per day",
+        })}
+        onChange={handleChange}
+        >
+          <option value="1">1 time a day</option>
+          <option value="2">2 times a day</option>
+          <option value="3">3 times a day</option>
+          <option value="4">4 times a day</option>
+          <option value="5">5 times a day</option>
+        </select>
+        <br />
+        <label for="dose">Doses for each takes : </label>
         <input
-          type="number"
-          name="time_a_day"
-          placeholder="How often - How many times you need to take that drug per day Ex: 3"
-          ref={register({
-            required:
-              "You need to enter how many times you have to take the drug per day",
-          })}
-          onChange={handleChange}
-        />
-        {/*<Controller 
-        as={<select>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">2</option>
-        </select>}
-        control={control}
-        rules={{ required: true }}
-        onChange={([selected]) => {
-          handleChange()
-        }}
-        name="reactSelect"
-        defaultValue={{ value: "chocolate" }}
-      >*/}
-        
-       {/* <Controller
-        as={<select options={options} />}
-        control={control}
-        rules={{ required: true }}
-        onChange={([selected]) => {
-          handleChange()
-        }}
-        name="reactSelect"
-        defaultValue={{ value: "chocolate" }}
-      />*/}
-        <input
+          id="dose"
           type="text"
-          name="quantity"
-          placeholder="Quantity Ex: 2 pills or 300miligrams"
+          name="dose"
+          placeholder="Ex: 2 pills or 300 miligrams"
           ref={register({ required: "The quantity is required" })}
         />
+        <br />
         {hoursNum.map(hour => {
-          return <input
-                    type="time"
-                    name={`hour${hour}`}
-                    placeholder="hour"
-                    ref={register({
-                    required: "The time when you need to take the drug is required",
-          })}
-        />
+          return (
+          <div>
+            <label for={`hour${hour}`}>Hour when it should taked : </label>
+            <input
+              id={`hour${hour}`}
+              type="time"
+              name={`hour${hour}`}
+              ref={register({
+                required: "The time when you need to take the drug is required",
+              })}
+            />  
+          </div>)
+          
         })}
         
-        <input
-          type="text"
+        <br />
+        <label for="notes">Notes : </label>
+        <textarea
+          row="5"
+          cols="50"
+          id="notes"
           name="notes"
-          placeholder="Specifications Ex: Take this 15min before lunch"
+          placeholder="Ex: Take it 15min before Lunch"
           ref={register}
-        />
+        ></textarea>
+        <br />
         <button type="submit">Add Drug</button>
       </form>
     </div>

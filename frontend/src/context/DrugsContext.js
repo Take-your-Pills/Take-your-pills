@@ -1,20 +1,30 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 export const DrugsContext = createContext();
 
 const DrugsContextProvider = (props) => {
+  const [drugs, setDrugs] = useState([]);
+  const [tempDrugs, setTempDrugs] = useState([]);
 
-const [drugs, setDrugs] = useState([]);
+
+  useEffect(() => {
+    getDrugs();
+  }, []);
+
+  const addTempDrugs = (newDrugObj) => {
+    setTempDrugs([...tempDrugs, newDrugObj]);
+  };
 
   const getDrugs = (id) => {
     axios
       .get(`/drugs/${id}`)
       .then((response) => response.data)
       .then((drugsList) => {
-        setDrugs(...drugs, drugsList)
+        console.log(drugsList);
+        setDrugs(drugsList);
       });
-  }
+  };
 
   const getSuccess = () => {
       const drugSuccess = drugs.map(drug => {
@@ -32,12 +42,12 @@ const [drugs, setDrugs] = useState([]);
 return (
     <div>
     <DrugsContext.Provider
-        value={{ drugs, getDrugs, getSuccess }}
+        value={{ drugs, getDrugs, getSuccess, tempDrugs, addTempDrugs }}
     >
         {props.children}
-    </DrugsContext.Provider>
+      </DrugsContext.Provider>
     </div>
-);   
-}
+  );
+};
 
 export default DrugsContextProvider;

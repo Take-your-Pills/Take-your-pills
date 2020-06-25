@@ -21,9 +21,13 @@ const PrescriptionContextProvider = (props) => {
       });
   };
 
+  const addPrescription = (newPrescriptionObj) => {
+    setPrescriptions([...prescriptions, newPrescriptionObj]);
+  };
+
   return (
     <div>
-      <PrescriptionContext.Provider value={{ prescriptions }}>
+      <PrescriptionContext.Provider value={{ prescriptions, addPrescription }}>
         {props.children}
       </PrescriptionContext.Provider>
     </div>

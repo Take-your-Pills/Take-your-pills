@@ -5,6 +5,7 @@ import TempDrug from "./TempDrug";
 import { useForm } from "react-hook-form";
 import { PrescriptionContext } from "../context/PrescriptionContext";
 import { HourContext } from "../context/HourContext";
+import "./NewPrescription.css";
 
 const NewPrescription = () => {
   const { tempDrugs } = useContext(DrugsContext);
@@ -28,35 +29,35 @@ const NewPrescription = () => {
     console.log(startDate);
 
     const durationArr = tempDrugs.map((drug) => {
-      return Number(drug.duration)
+      return Number(drug.duration);
     });
     const prescriptionDuration = Math.max(...durationArr);
     const dateArr = startDate.split("-");
-    const year = dateArr[0]
-    const month = dateArr[1]
-    const day = dateArr[2]
-    const startingDate = new Date(year, month, day)
-    startingDate.setDate(startingDate.getDate() + prescriptionDuration)
+    const year = dateArr[0];
+    const month = dateArr[1];
+    const day = dateArr[2];
+    const startingDate = new Date(year, month, day);
+    startingDate.setDate(startingDate.getDate() + prescriptionDuration);
     const dd = startingDate.getDate();
     const mm = startingDate.getMonth();
     const yy = startingDate.getFullYear();
-    const endDate = `${yy}-${mm}-${dd}`
-    console.log(endDate)
+    const endDate = `${yy}-${mm}-${dd}`;
+    console.log(endDate);
     const newPrescriptionObject = {
-      user_id:1,
+      user_id: 1,
       title: data.title,
       start_date: startDate,
       end_date: endDate,
       duration: prescriptionDuration,
-      days_left: prescriptionDuration
+      days_left: prescriptionDuration,
     };
 
-    console.log(newPrescriptionObject)
+    console.log(newPrescriptionObject);
 
-    console.log(tempDrugs)
+    console.log(tempDrugs);
 
-    const drugsObject = tempDrugs.map(drug => {
-      return ({
+    const drugsObject = tempDrugs.map((drug) => {
+      return {
         id: drug.id,
         name: drug.name,
         duration: drug.duration,
@@ -65,14 +66,13 @@ const NewPrescription = () => {
         notes: drug.notes,
         doses_taken: drug.doses_taken,
         days_left: drug.days_left,
-        doses_supposed: drug.doses_supposed
-      }
-    )}
-    )
-      
-    console.log(drugsObject)
+        doses_supposed: drug.doses_supposed,
+      };
+    });
+
+    console.log(drugsObject);
     addPrescription(newPrescriptionObject, drugsObject);
-    addHours(hours)
+    addHours(hours);
   };
 
   return (

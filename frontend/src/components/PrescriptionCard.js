@@ -21,23 +21,20 @@ const PrescriptionCard = (props) => {
   }, []);
 
   return (
-    <div className="card">
-      <div className="card-title">{props.title}</div>
-      <div className="card-info">{props.days_left} days left</div>
-      <div className="card-info">
+    <div className="prescription-card">
+      <div className="prescription-card-title">{props.title}</div>
+      <div className="prescription-card-info">{props.days_left} days left</div>
+      <div className="prescription-card-info">
         Start date: {props.start_year}-{props.start_month}-{props.start_day}
       </div>
-      <div className="card-info">
+      <div className="prescription-card-info">
         {prescriptionDrugs.length && prescriptionDrugs[0].name}
       </div>
-      <div className="card-info">
-        {prescriptionDrugs.length && prescriptionDrugs[0].duration} days to take
+      <div className="prescription-card-info">
+        {prescriptionDrugs.length && prescriptionDrugs[0].times_a_day} times a day
       </div>
-      <div className="card-info">
-        {prescriptionDrugs.length && prescriptionDrugs[0].times_a_day} per day
-      </div>
-      <div className="card-info">
-        {prescriptionDrugs.length && prescriptionDrugs[0].dose} per take
+      <div className="prescription-card-info">
+        dosage :{prescriptionDrugs.length && prescriptionDrugs[0].dose}
       </div>
     </div>
   );

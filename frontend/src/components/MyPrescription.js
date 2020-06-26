@@ -21,17 +21,15 @@ const MyPrescription = () => {
 
   return (
     <div className="body">
-      <button>
+      <button className="add-prescription-btn">
         <Link to="/new-prescription">Add Prescription</Link>
       </button>
-
+      <div className="prescriptions-wrapper">
       {prescriptions.map((prescription) => {
         return <PrescriptionCard {...prescription} key={prescription.id} />;
       })}
-
-      <button>
-        <Link to="/prescription-info">More</Link>
-      </button>
+      </div>
+     
     </div>
   );
 };

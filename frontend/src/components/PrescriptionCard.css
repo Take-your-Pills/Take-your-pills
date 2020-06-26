@@ -1,20 +1,19 @@
-.card {
-  position: relative;
+.prescription-card {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
-  align-items: center;
-  width: 100px;
-  height: 100px;
-  background-color: white;
+  align-items: flex-start;
+  width: fit-content;
+  height: content;
+  padding: 20px;
+  background-color: rgb(233, 233, 233);
   margin: 10px 20px;
   outline: none;
   border-radius: 20px;
-  box-shadow: 4px 4px 6px grey;
+  box-shadow: 4px 4px 8px rgba(155, 155, 155, 0.1);
   cursor: pointer;
 }
 
-.card-title {
+.prescription-card-title {
   position: relative;
   display: flex;
   justify-content: center;
@@ -23,10 +22,14 @@
   height: 30%;
   border-radius: 0 0 20px 20px;
   font-size: 20px;
+  font-family: roboto;
+  font-weight: 500;
+  color: aqua;
 }
 
-.card-info {
+.prescription-card-info {
   font-size: 20px;
-  text-align: center;
-  margin: 0 10px;
+  margin: 5px ;
+  font-family: roboto;
+  font-weight: 350;
 }

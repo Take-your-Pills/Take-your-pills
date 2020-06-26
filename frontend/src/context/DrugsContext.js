@@ -17,16 +17,19 @@ const DrugsContextProvider = (props) => {
   };
 
   const getDrugs = (id) => {
+
+    console.log(id)
     axios
       .get(`/drugs/${id}`)
       .then((response) => response.data)
       .then((drugsList) => {
-        console.log(drugsList);
-        setDrugs(drugsList);
-      });
+         console.log(drugsList);
+        setDrugs(...drugs, drugsList);
+     });
   };
 
   const getSuccess = () => {
+      console.log(drugs)
       const drugSuccess = drugs.map(drug => {
           const daysPassed = drug.duration - drug.days_left;
           const dosesThatShoudveBeenTaken = daysPassed * drug.times_a_day;
@@ -35,6 +38,7 @@ const DrugsContextProvider = (props) => {
 
           return drug
       })
+      console.log(drugSuccess)
       setDrugs(drugSuccess)
       
   }

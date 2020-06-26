@@ -6,9 +6,9 @@ import { DrugsContext } from '../context/DrugsContext';
 const PrescriptionCard = (props) => {
 
   const { drugs, getDrugs, getSuccess } = useContext(DrugsContext);
-  const { getPrescriptionsSuccess } = useContext(PrescriptionContext);
+  const { getPrescriptionsSuccess, prescriptions } = useContext(PrescriptionContext);
 
-
+  console.log(props)
 
     useEffect(() => {
         getDrugs(props.id)
@@ -26,6 +26,10 @@ const PrescriptionCard = (props) => {
             getPrescriptionsSuccess(drugs);
         }
       }, [drugs]);
+
+      useEffect(() => {
+        console.log(props)
+      }, [prescriptions]);
 
 
   return (

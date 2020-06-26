@@ -10,7 +10,7 @@ const HourContextProvider = (props) => {
     axios
       .post('/hours', hoursObject)
       .then((response) => console.log(response))
-};
+  };
 
   const getHours = () => {
     axios

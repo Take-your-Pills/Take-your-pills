@@ -16,6 +16,20 @@ router.get('/', (req, res) => {
     })
 });
 
+router.get('/mypills', (req, res) => {
+
+  connection.query('SELECT d.id, DAY(p.start_date) AS starting_day,MONTH(p.start_date) AS starting_month, YEAR(p.start_date) AS starting_year, d.duration, h.hour, h.id AS id FROM drugs d JOIN hours h ON d.id=h.drug_id JOIN prescriptions p ON p.id=d.prescription_id;', (err, results) => {
+      if (err) {
+          res.status(500).json({
+            error: err.message,
+            sql: err.sql,
+          });
+        } else {
+          res.json(results);
+        }
+  })
+});
+
 router.get('/:id', (req, res) => {
 
     const id = req.params.id

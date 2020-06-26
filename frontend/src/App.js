@@ -14,12 +14,14 @@ import PrescriptionContextProvider from "../src/context/PrescriptionContext";
 import UserContextProvider from "../src/context/UserContext";
 import DrugsContextProvider from "../src/context/DrugsContext";
 import HourContextProvider from "../src/context/HourContext";
+import MyPillsContextProvider from "../src/context/MyPillsContext";
 
 function App() {
 
   return (
     <div className="App">
       <BrowserRouter>
+      <MyPillsContextProvider>
         <HourContextProvider>
           <PrescriptionContextProvider>
             <UserContextProvider>
@@ -39,6 +41,7 @@ function App() {
             </UserContextProvider>
           </PrescriptionContextProvider>
         </HourContextProvider>
+        </MyPillsContextProvider>
       </BrowserRouter>
     </div>
   );

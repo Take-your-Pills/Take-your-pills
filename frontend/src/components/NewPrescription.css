@@ -1,0 +1,95 @@
+.new-prescription{
+    width: 70%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(233, 233, 233);
+    box-shadow: 4px 4px 8px rgba(155, 155, 155, 0.1);
+    border-radius: 20px;
+    height: fit-content;
+    padding: 20px;
+
+}
+
+.start-now{
+    margin-top: -10px;
+    margin-bottom: -10px;
+    display: flex;
+    align-items: center;
+}
+.start-now p{
+margin-right: 5px;
+}
+
+.new-prescription h1{
+    font-family: roboto;
+    font-weight: 500;
+}
+
+label{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.prescription-form{
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.label-input{
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    outline: none;
+    border-radius: 5px;
+    border: none;
+}
+
+select{
+    outline: none;
+    border-radius: 5px;
+    border: none;
+}
+
+button{
+    align-self: center;
+    width: fit-content;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: aqua;
+    border: none;
+    box-shadow: 4px 4px 8px rgba(155, 155, 155, 0.1);
+    color: white;
+    font-size: 20px;
+}
+
+.drug-form{
+    display: flex;
+    flex-direction: column;
+}
+
+.temp-durg-info{
+    width: 70%;
+    padding: 10px;
+    height: fit-content;
+    border: 1px solid rgb(155, 155, 155);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+}
+
+.temp-info h3{
+    font-family: roboto;
+    font-weight: 500;
+}
+
+.temp-info{
+    font-family: roboto;
+    font-weight: 350;
+}

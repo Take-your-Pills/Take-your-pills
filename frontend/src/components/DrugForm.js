@@ -7,7 +7,7 @@ import uuid from "react-uuid";
 
 
 const DrugForm = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const { addTempDrugs } = useContext(DrugsContext);
   const { addHour, setHours } = useContext(HourContext);
 
@@ -38,6 +38,17 @@ const DrugForm = () => {
       return {hour: `${time}:00`, drug_id: newDrugObj.id}
     })
 
+    reset({
+      name: "",
+      duration: "",
+      dose: "",
+      times_a_day: 1,
+      hour:"",
+      notes:""
+  });
+
+  setHoursNum([0])
+
     console.log(newDrugObj)
     console.log(hoursObject)
     addTempDrugs(newDrugObj);
@@ -58,7 +69,8 @@ const DrugForm = () => {
   }
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className="drug-form" onSubmit={handleSubmit(onSubmit)}>
+        <div className="label-input">
         <label for="name">Drug Name : </label>
         <input
           id="name"
@@ -67,7 +79,8 @@ const DrugForm = () => {
           placeholder="Ex: Aspirin"
           ref={register({ required: "The name is Required" })}
         />
-        <br />
+        </div>
+        <div className="label-input">
         <label for="duration">Duration : </label>
         <input
           id="duration"
@@ -76,7 +89,8 @@ const DrugForm = () => {
           placeholder="Ex: 5"
           ref={register({ required: "The duration is required" })}
         />
-        <br />
+        </div>
+        <div className="label-input">
         <label for="times_a_day">How many time per day : </label>
         <select id="times_a_day"
         name="times_a_day"
@@ -92,20 +106,13 @@ const DrugForm = () => {
           <option value="4">4 times a day</option>
           <option value="5">5 times a day</option>
         </select>
-        <br />
-        <label for="dose">Doses for each takes : </label>
-        <input
-          id="dose"
-          type="text"
-          name="dose"
-          placeholder="Ex: 2 pills or 300 miligrams"
-          ref={register({ required: "The quantity is required" })}
-        />
-        <br />
+        </div>
+        
+        <div className="hours">
         {hoursNum.map(hour => {
           return (
-          <div>
-            <label for={`hour${hour}`}>Hour when it should taked : </label>
+          <div className="label-input">
+            <label for={`hour${hour}`}>hour {hour + 1} </label>
             <input
               id={`hour${hour}`}
               type="time"
@@ -117,8 +124,19 @@ const DrugForm = () => {
           </div>)
           
         })}
+        </div>
+        <div className="label-input">
+        <label for="dose">Doses: </label>
+        <input
+          id="dose"
+          type="text"
+          name="dose"
+          placeholder="Ex: 2 pills or 300 miligrams"
+          ref={register({ required: "The quantity is required" })}
+        />
+        </div>
         
-        <br />
+        <div className="label-input">
         <label for="notes">Notes : </label>
         <textarea
           row="5"
@@ -128,7 +146,7 @@ const DrugForm = () => {
           placeholder="Ex: Take it 15min before Lunch"
           ref={register}
         ></textarea>
-        <br />
+        </div>
         <button type="submit">Add Drug</button>
       </form>
     </div>

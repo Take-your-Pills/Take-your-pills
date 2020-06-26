@@ -76,14 +76,19 @@ const NewPrescription = () => {
   };
 
   return (
-    <div>
+    <div className="new-prescription">
       <h1>New Prescriptions</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className="prescription-form" onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label for="title">Prescription Title</label>
-          <input type="text" id="title" name="title" ref={register} />
-          <label for="start_date">Start date</label>
-          <input
+          <div className="label-input">
+            <label for="title">Prescription Title</label>
+          < input type="text" id="title" name="title" ref={register} />
+          </div>
+          <div className="label-input">
+            <label for="start_date">Start date</label>
+            <div className="start-now">
+            <p>now</p>
+            <input
             type="checkbox"
             id="start_date"
             name="date"
@@ -91,7 +96,11 @@ const NewPrescription = () => {
             value={checkboxCheck}
             onChange={toggleDate}
             ref={register}
-          />
+            />
+            </div>
+            
+          </div>
+          
           {!checkboxCheck && <input type="date" name="date" ref={register} />}
         </div>
         <div>

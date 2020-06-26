@@ -1,0 +1,15 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  height: 250px;
+  background-color: white;
+  margin: 10px 20px;
+  outline: none;
+  border-radius: 20px;
+  box-shadow: 4px 4px 6px grey;
+  cursor: pointer;
+}

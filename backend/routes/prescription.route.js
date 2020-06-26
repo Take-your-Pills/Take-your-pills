@@ -54,12 +54,12 @@ router.post('/', (req, res) => {
         return drug
       })
       console.log("dugsArr", drugsArr)
-      let sql = "INSERT INTO `drugs` (prescription_id, name, duration, times_a_day, dose, notes, doses_taken, days_left, doses_supposed) VALUES "
+      let sql = "INSERT INTO `drugs` (id, prescription_id, name, duration, times_a_day, dose, notes, doses_taken, days_left, doses_supposed) VALUES "
       drugsArr.map( drug => {
         if(drugsArr.indexOf(drug) !== drugsArr.length -1) {
-          sql += `(${drug.prescription_id}, "${drug.name}", ${drug.duration}, ${drug.times_a_day}, "${drug.dose}", "${drug.notes}", ${drug.doses_taken}, ${drug.days_left}, ${drug.doses_supposed}),`
+          sql += `("${drug.id}", ${drug.prescription_id}, "${drug.name}", ${drug.duration}, ${drug.times_a_day}, "${drug.dose}", "${drug.notes}", ${drug.doses_taken}, ${drug.days_left}, ${drug.doses_supposed}),`
         } else {
-          sql += `(${drug.prescription_id}, "${drug.name}", ${drug.duration}, ${drug.times_a_day}, "${drug.dose}", "${drug.notes}", ${drug.doses_taken}, ${drug.days_left}, ${drug.doses_supposed});`
+          sql += `("${drug.id}", ${drug.prescription_id}, "${drug.name}", ${drug.duration}, ${drug.times_a_day}, "${drug.dose}", "${drug.notes}", ${drug.doses_taken}, ${drug.days_left}, ${drug.doses_supposed});`
         }
       })
       
